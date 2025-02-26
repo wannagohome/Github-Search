@@ -60,6 +60,15 @@ const SearchScreen: React.FC = () => {
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
+  
+  const handleCancel = () => {
+    setSearchText('');
+    Keyboard.dismiss();
+  };
+  
+  const handleClear = () => {
+    setSearchText('');
+  };
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -69,12 +78,17 @@ const SearchScreen: React.FC = () => {
             Search
           </Animated.Text>
           
-          <SearchBar
-            value={searchText}
-            onChangeText={setSearchText}
-            onFocus={() => setIsFocused(true)}
-            style={[styles.searchBarContainer, { transform: [{ translateY: searchBarPosition }] }]}
-          />
+          <Animated.View style={{ transform: [{ translateY: searchBarPosition }] }}>
+            <SearchBar
+              value={searchText}
+              onChangeText={setSearchText}
+              onFocus={() => setIsFocused(true)}
+              onCancel={handleCancel}
+              onClear={handleClear}
+              isFocused={isFocused}
+              style={styles.searchBarContainer}
+            />
+          </Animated.View>
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
