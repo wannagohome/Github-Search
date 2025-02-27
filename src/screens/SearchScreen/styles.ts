@@ -16,8 +16,17 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
   },
+  searchContainer: {
+    width: '100%',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+  },
   searchBarContainer: {
-    borderRadius: 10,
-    paddingHorizontal: 16,
+    width: '100%',
+  },
+  autoCompleteContainer: {
+    width: '100%',
+    backgroundColor: 'white',
+    borderTopWidth: 0,
   },
 });

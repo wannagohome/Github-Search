@@ -24,8 +24,8 @@ interface SearchBarProps {
   onFocus?: () => void;
   onCancel?: () => void;
   onClear?: () => void;
+  onSubmitEditing?: () => void;
   isFocused: boolean;
-  style?: any;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -34,8 +34,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onFocus,
   onCancel,
   onClear,
+  onSubmitEditing,
   isFocused,
-  style,
 }) => {
   const [containerWidth, setContainerWidth] = React.useState(0);
   
@@ -55,8 +55,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <View style={styles.container} onLayout={onLayout}>
         <View 
           style={[
-            styles.searchContainer, 
-            style, 
+            styles.searchContainer,
             { width: isFocused ? '85%' : '100%' }
           ]}
         >
@@ -68,6 +67,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             onChangeText={onChangeText}
             returnKeyType="search"
             onFocus={onFocus}
+            onSubmitEditing={onSubmitEditing}
           />
           {isFocused && value.length > 0 && (
             <TouchableOpacity onPress={onClear} style={styles.clearButton}>
@@ -91,7 +91,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
 const styles = StyleSheet.create({
   outerContainer: {
     width: '100%',
-    marginBottom: 20,
   },
   container: {
     flexDirection: 'row',
