@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   FlatList,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const MAX_DISPLAY_SEARCHES = 10;
 
@@ -24,14 +24,19 @@ const RecentSearches: React.FC<RecentSearchesProps> = ({
   onClearAllSearches,
 }) => {
   const displaySearches = searches.slice(0, MAX_DISPLAY_SEARCHES);
-  
+
   const renderRecentSearchItem = ({ item }: { item: string }) => (
     <View style={styles.recentSearchItem}>
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.recentSearchTextContainer}
         onPress={() => onSelectSearch(item)}
       >
-        <Ionicons name="time-outline" size={18} color="#999" style={styles.recentSearchIcon} />
+        <Ionicons
+          name="time-outline"
+          size={18}
+          color="#999"
+          style={styles.recentSearchIcon}
+        />
         <Text style={styles.recentSearchText}>{item}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onRemoveSearch(item)}>
@@ -52,7 +57,7 @@ const RecentSearches: React.FC<RecentSearchesProps> = ({
           <Text style={styles.clearAllButton}>전체삭제</Text>
         </TouchableOpacity>
       </View>
-      
+
       <FlatList
         data={displaySearches}
         renderItem={renderRecentSearchItem}
@@ -66,33 +71,33 @@ const RecentSearches: React.FC<RecentSearchesProps> = ({
 const styles = StyleSheet.create({
   recentSearchesContainer: {
     marginTop: 20,
-    width: '100%',
+    width: "100%",
   },
   recentSearchesHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 10,
   },
   recentSearchesTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   clearAllButton: {
-    color: '#FF6B6B',
+    color: "#FF6B6B",
     fontSize: 14,
   },
   recentSearchItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: "#f0f0f0",
   },
   recentSearchTextContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     flex: 1,
   },
   recentSearchIcon: {
@@ -103,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecentSearches; 
+export default RecentSearches;

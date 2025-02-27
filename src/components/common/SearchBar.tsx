@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   TextInput,
   StyleSheet,
@@ -9,10 +9,10 @@ import {
   LayoutAnimation,
   Platform,
   UIManager,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-if (Platform.OS === 'android') {
+if (Platform.OS === "android") {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
@@ -38,28 +38,33 @@ const SearchBar: React.FC<SearchBarProps> = ({
   isFocused,
 }) => {
   const [containerWidth, setContainerWidth] = React.useState(0);
-  
+
   React.useEffect(() => {
     if (containerWidth > 0) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     }
   }, [isFocused, containerWidth]);
-  
+
   const onLayout = (event: LayoutChangeEvent) => {
     const { width } = event.nativeEvent.layout;
     setContainerWidth(width);
   };
-  
+
   return (
     <View style={styles.outerContainer}>
       <View style={styles.container} onLayout={onLayout}>
-        <View 
+        <View
           style={[
             styles.searchContainer,
-            { width: isFocused ? '85%' : '100%' }
+            { width: isFocused ? "85%" : "100%" },
           ]}
         >
-          <Ionicons name="search-outline" size={20} color="#999" style={styles.icon} />
+          <Ionicons
+            name="search-outline"
+            size={20}
+            color="#999"
+            style={styles.icon}
+          />
           <TextInput
             style={styles.input}
             placeholder="저장소 검색"
@@ -75,7 +80,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             </TouchableOpacity>
           )}
         </View>
-        
+
         {isFocused && (
           <View style={styles.cancelButtonContainer}>
             <TouchableOpacity onPress={onCancel} style={styles.cancelButton}>
@@ -90,18 +95,18 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
 const styles = StyleSheet.create({
   outerContainer: {
-    width: '100%',
+    width: "100%",
   },
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
     height: 40,
   },
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f2f2f2',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f2f2f2",
     borderRadius: 10,
     paddingHorizontal: 12,
     height: 40,
@@ -120,14 +125,14 @@ const styles = StyleSheet.create({
   cancelButtonContainer: {
     paddingLeft: 8,
     height: 40,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   cancelButton: {
-    height: '100%',
-    justifyContent: 'center',
+    height: "100%",
+    justifyContent: "center",
   },
   cancelText: {
-    color: '#5856D6',
+    color: "#5856D6",
     fontSize: 16,
   },
 });
