@@ -1,16 +1,20 @@
 import React from "react";
-import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
+import {
+  useNavigation,
+  NavigationProp,
+  ParamListBase,
+} from "@react-navigation/native";
 import { styles } from "./styles";
-
-interface Repository {
-  id: number;
-  name: string;
-  description: string;
-  owner: {
-    login: string;
-    avatar_url: string;
-  };
-}
+import { Repository } from "../../models";
 
 interface SearchResultsProps {
   results: Repository[];
@@ -25,8 +29,20 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   isLoading,
   onEndReached,
 }) => {
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+
+  const handleRepositoryPress = (repository: Repository) => {
+    navigation.navigate("WebView", {
+      url: repository.html_url,
+      title: repository.name,
+    });
+  };
+
   const renderItem = ({ item }: { item: Repository }) => (
-    <View style={styles.itemContainer}>
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => handleRepositoryPress(item)}
+    >
       <Image source={{ uri: item.owner.avatar_url }} style={styles.thumbnail} />
       <View style={styles.textContainer}>
         <Text style={styles.title}>{item.name}</Text>
@@ -34,7 +50,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           {item.description || "No description available"}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -72,7 +88,7 @@ const flatListStyles = StyleSheet.create({
   content: {
     paddingBottom: 0,
     flexGrow: 1,
-  }
+  },
 });
 
 export default SearchResults;

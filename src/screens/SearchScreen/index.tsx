@@ -16,23 +16,9 @@ import {
   SearchResults,
 } from "../../components";
 import { styles } from "./styles";
+import { Repository, Search } from "../../models";
 
 const RECENT_SEARCHES_KEY = "recent_searches";
-
-interface Search {
-  keyword: string;
-  date: Date;
-}
-
-interface Repository {
-  id: number;
-  name: string;
-  description: string;
-  owner: {
-    login: string;
-    avatar_url: string;
-  };
-}
 
 const SearchScreen: React.FC = () => {
   const [currentSearchKeyword, setCurrentSearchKeyword] = useState("");

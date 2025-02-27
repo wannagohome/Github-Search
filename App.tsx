@@ -1,18 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import SearchScreen from './src/screens/SearchScreen';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { SearchScreen, WebViewScreen } from './src/screens';
 
-export default function App() {
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <SearchScreen />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Search">
+        <Stack.Screen 
+          name="Search" 
+          component={SearchScreen} 
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="WebView" 
+          component={WebViewScreen} 
+          options={{ headerShown: true }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+export default App;
