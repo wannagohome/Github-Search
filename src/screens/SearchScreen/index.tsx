@@ -37,10 +37,7 @@ const SearchScreen: React.FC = () => {
     );
     const keyboardHideListener = Keyboard.addListener(
       Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
-      () => {
-        setIsFocused(false);
-        animateUI(false);
-      }
+      () => setIsFocused(false)
     );
 
     return () => {
@@ -50,25 +47,26 @@ const SearchScreen: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (isFocused) {
-      animateUI(true);
-    }
-  }, [isFocused]);
+    const animations = [];
 
-  const animateUI = (focused: boolean) => {
-    Animated.parallel([
+    animations.push(
       Animated.timing(titleOpacity, {
-        toValue: focused ? 0 : 1,
-        duration: focused ? 200 : 100,
+        toValue: isFocused ? 0 : 1,
+        duration: 300,
         useNativeDriver: true,
-      }),
+      })
+    );
+
+    animations.push(
       Animated.timing(searchBarPosition, {
-        toValue: focused ? -50 : 0,
-        duration: focused ? 200 : 100,
+        toValue: isFocused ? -50 : 0,
+        duration: 300,
         useNativeDriver: true,
-      }),
-    ]).start();
-  };
+      })
+    );
+
+    Animated.parallel(animations).start();
+  }, [isFocused]);
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -76,9 +74,8 @@ const SearchScreen: React.FC = () => {
 
   const handleCancel = () => {
     setCurrentSearchKeyword("");
-    setIsFocused(false);
-    animateUI(false);
     Keyboard.dismiss();
+    setIsFocused(false);
   };
 
   const handleClear = () => {
