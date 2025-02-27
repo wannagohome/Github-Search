@@ -26,6 +26,7 @@ interface SearchBarProps {
   onClear?: () => void;
   onSubmitEditing?: () => void;
   isFocused: boolean;
+  hasSearchResults?: boolean;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -36,6 +37,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onClear,
   onSubmitEditing,
   isFocused,
+  hasSearchResults = false,
 }) => {
   const [containerWidth, setContainerWidth] = React.useState(0);
 
@@ -50,13 +52,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setContainerWidth(width);
   };
 
+  const shouldShowCancelButton = isFocused || hasSearchResults;
+
   return (
     <View style={styles.outerContainer}>
       <View style={styles.container} onLayout={onLayout}>
         <View
           style={[
             styles.searchContainer,
-            { width: isFocused ? "85%" : "100%" },
+            { width: shouldShowCancelButton ? "85%" : "100%" },
           ]}
         >
           <Ionicons
@@ -74,14 +78,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
             onFocus={onFocus}
             onSubmitEditing={onSubmitEditing}
           />
-          {isFocused && value.length > 0 && (
+          {value.length > 0 && (
             <TouchableOpacity onPress={onClear} style={styles.clearButton}>
               <Ionicons name="close-circle" size={18} color="#999" />
             </TouchableOpacity>
           )}
         </View>
 
-        {isFocused && (
+        {shouldShowCancelButton && (
           <View style={styles.cancelButtonContainer}>
             <TouchableOpacity onPress={onCancel} style={styles.cancelButton}>
               <Text style={styles.cancelText}>취소</Text>
