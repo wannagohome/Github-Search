@@ -63,6 +63,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
         showsVerticalScrollIndicator={false}
         style={styles.list}
         contentContainerStyle={styles.listContent}
+        keyboardShouldPersistTaps="always"
       />
     </View>
   );
