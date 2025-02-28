@@ -257,7 +257,7 @@ const SearchScreen: React.FC = () => {
             />
           </View>
 
-          {isFocused && !hasSearchResults && (
+          {isFocused && !hasSearchResults && !isFetchingFirstPage && (
             <View style={styles.autoCompleteContainer}>
               <AutoComplete
                 searchText={currentSearchKeyword}

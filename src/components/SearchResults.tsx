@@ -46,7 +46,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
       <View style={styles.textContainer}>
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.description} numberOfLines={2}>
-          {item.description || "No description available"}
+          {item.description}
         </Text>
       </View>
     </TouchableOpacity>
