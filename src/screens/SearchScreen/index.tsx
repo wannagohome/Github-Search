@@ -269,7 +269,7 @@ const SearchScreen: React.FC = () => {
           )}
         </Animated.View>
 
-        {!isFocused && !hasSearchResults && recentSearchKeywords.length > 0 && (
+        {!isFocused && !hasSearchResults && !isFetchingFirstPage && recentSearchKeywords.length > 0 && (
           <RecentSearches
             searches={recentSearchKeywords}
             onSelectSearch={selectRecentSearch}
@@ -290,9 +290,6 @@ const SearchScreen: React.FC = () => {
               styles.searchResultsContainer,
               {
                 transform: [{ translateY: searchBarPosition }],
-                flex: 1,
-                paddingBottom: 0,
-                marginBottom: 0,
               },
             ]}
             pointerEvents="box-none"
