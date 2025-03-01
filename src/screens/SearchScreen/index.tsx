@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   SearchBar,
   RecentSearches,
@@ -17,6 +16,8 @@ import {
 } from "../../components";
 import { styles } from "./styles";
 import { Repository, Search } from "../../models";
+import { DateUtil } from "../../utils";
+import { StorageClient, ApiClient } from "../../clients";
 
 const RECENT_SEARCHES_KEY = "recent_searches";
 
@@ -78,10 +79,6 @@ const SearchScreen: React.FC = () => {
     Animated.parallel(animations).start();
   }, [isFocused, hasSearchResults]);
 
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString();
-  };
-
   const handleSearch = () => {
     if (!currentSearchKeyword.trim()) return;
 
@@ -91,30 +88,22 @@ const SearchScreen: React.FC = () => {
   };
 
   const saveRecentSearchKeyword = async (keyword: string) => {
-    const search = { keyword, date: new Date() };
+    const search = { keyword, date: DateUtil.now() };
     const newSearches = [
       search,
       ...searches.filter((search) => search.keyword !== keyword),
     ];
 
     setSearches(newSearches);
-    await AsyncStorage.setItem(
-      RECENT_SEARCHES_KEY,
-      JSON.stringify(newSearches)
-    ).catch((error) => {
-      console.error("Failed to save recent search", error);
-    });
+    await StorageClient.save(RECENT_SEARCHES_KEY, newSearches);
   };
 
   const loadRecentSearches = async () => {
-    const storedSearches = await AsyncStorage.getItem(
+    const storedSearches = await StorageClient.get<Search[]>(
       RECENT_SEARCHES_KEY
-    ).catch((error) => {
-      console.error("Failed to load recent searches", error);
-    });
+    );
     if (storedSearches) {
-      const parsedSearches = JSON.parse(storedSearches);
-      setSearches(parsedSearches);
+      setSearches(storedSearches);
     }
   };
 
@@ -123,19 +112,12 @@ const SearchScreen: React.FC = () => {
       (search) => search.keyword !== keyword
     );
     setSearches(updatedSearches);
-    await AsyncStorage.setItem(
-      RECENT_SEARCHES_KEY,
-      JSON.stringify(updatedSearches)
-    ).catch((error) => {
-      console.error("Failed to remove recent search", error);
-    });
+    await StorageClient.save(RECENT_SEARCHES_KEY, updatedSearches);
   };
 
   const clearAllRecentSearches = async () => {
     setSearches([]);
-    await AsyncStorage.removeItem(RECENT_SEARCHES_KEY).catch((error) => {
-      console.error("Failed to clear recent searches", error);
-    });
+    await StorageClient.remove(RECENT_SEARCHES_KEY);
   };
 
   const dismissKeyboardIfNeeded = () => {
@@ -169,22 +151,19 @@ const SearchScreen: React.FC = () => {
         setIsFetchingMore(true);
       }
 
-      const response = await fetch(
-        `https://api.github.com/search/repositories?q=${encodeURIComponent(
-          keyword
-        )}&page=${page}`
-      );
+      const response = await ApiClient.searchRepositories(keyword, page);
 
-      const data = await response.json();
+      if (!response) {
+        return;
+      }
+
+      const { items, total_count } = response;
 
       if (isFirstPage) {
-        setSearchResults(data.items || []);
-        setTotalCount(data.total_count || 0);
+        setSearchResults(items);
+        setTotalCount(total_count);
       } else {
-        setSearchResults((prevResults) => [
-          ...prevResults,
-          ...(data.items || []),
-        ]);
+        setSearchResults((prevResults) => [...prevResults, ...items]);
       }
 
       setCurrentPage(page);
@@ -263,20 +242,22 @@ const SearchScreen: React.FC = () => {
                 searchText={currentSearchKeyword}
                 searches={searches}
                 onSelectItem={selectRecentSearch}
-                formatDate={formatDate}
               />
             </View>
           )}
         </Animated.View>
 
-        {!isFocused && !hasSearchResults && !isFetchingFirstPage && recentSearchKeywords.length > 0 && (
-          <RecentSearches
-            searches={recentSearchKeywords}
-            onSelectSearch={selectRecentSearch}
-            onRemoveSearch={removeRecentSearch}
-            onClearAllSearches={clearAllRecentSearches}
-          />
-        )}
+        {!isFocused &&
+          !hasSearchResults &&
+          !isFetchingFirstPage &&
+          recentSearchKeywords.length > 0 && (
+            <RecentSearches
+              searches={recentSearchKeywords}
+              onSelectSearch={selectRecentSearch}
+              onRemoveSearch={removeRecentSearch}
+              onClearAllSearches={clearAllRecentSearches}
+            />
+          )}
 
         {isFetchingFirstPage && !isFetchingMore && (
           <View style={styles.loadingContainer}>

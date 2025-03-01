@@ -7,24 +7,19 @@ import {
   FlatList,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
-interface Search {
-  keyword: string;
-  date: Date;
-}
+import { Search } from "../models";
+import { DateUtil } from "../utils";
 
 interface AutoCompleteProps {
   searchText: string;
   searches: Search[];
   onSelectItem: (text: string) => void;
-  formatDate: (date: Date) => string;
 }
 
 const AutoComplete: React.FC<AutoCompleteProps> = ({
   searchText,
   searches,
   onSelectItem,
-  formatDate,
 }) => {
   const filteredItems = searchText.trim()
     ? searches.filter((search) =>
@@ -50,7 +45,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
         />
         <Text style={styles.itemText}>{item.keyword}</Text>
       </View>
-      <Text style={styles.dateText}>{formatDate(item.date)}</Text>
+      <Text style={styles.dateText}>{DateUtil.formatDate(item.date)}</Text>
     </TouchableOpacity>
   );
 
