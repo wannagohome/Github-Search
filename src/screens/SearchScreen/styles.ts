@@ -12,9 +12,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 0,
   },
-  fullHeightContent: {
-    paddingBottom: 0,
-  },
   backgroundTouchLayer: {
     position: "absolute",
     top: 0,

@@ -210,7 +210,6 @@ const SearchScreen: React.FC = () => {
       <View
         style={[
           styles.contentContainer,
-          hasSearchResults && styles.fullHeightContent,
         ]}
       >
         <Animated.Text style={[styles.title, { opacity: titleOpacity }]}>
