@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextInput,
   StyleSheet,
@@ -39,9 +39,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   isFocused,
   hasSearchResults = false,
 }) => {
-  const [containerWidth, setContainerWidth] = React.useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (containerWidth > 0) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     }

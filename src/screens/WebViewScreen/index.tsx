@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,9 +19,9 @@ const WebViewScreen: React.FC = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const { url, title } = route.params as WebViewScreenParams;
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       title,
       headerLeft: () => (
